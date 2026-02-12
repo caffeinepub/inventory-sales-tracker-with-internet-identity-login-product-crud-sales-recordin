@@ -1,0 +1,22 @@
+{
+  "frontend/src/App.tsx": "Main application component that handles authentication flow, profile onboarding, and renders the authenticated app shell with page routing.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including user profiles, products, sales, and low-stock alerts with proper cache invalidation and fixed useGetSalesByDateRange to be a proper hook.",
+  "frontend/src/hooks/useUserProfile.ts": "Re-exports user profile hooks for cleaner imports.",
+  "frontend/src/hooks/useDashboard.ts": "Custom hook that uses useGetSalesByDateRange to fetch sales data and computes daily summary metrics for the dashboard.",
+  "frontend/src/lib/format.ts": "Utility functions for consistent formatting of currency, numbers, dates, and timestamps across the application.",
+  "frontend/src/components/auth/LoginButton.tsx": "Reusable login/logout button component with loading states and query cache clearing on logout.",
+  "frontend/src/components/profile/ProfileOnboardingDialog.tsx": "Modal dialog for first-time user onboarding to collect display name and default low-stock threshold.",
+  "frontend/src/components/layout/AppShell.tsx": "Authenticated app layout with responsive header, sidebar navigation, and footer with attribution.",
+  "frontend/src/pages/Dashboard.tsx": "Dashboard page showing daily sales summary cards, date selector, and low-stock alerts.",
+  "frontend/src/pages/Products.tsx": "Product management page with list view and add/edit/delete functionality.",
+  "frontend/src/pages/Sales.tsx": "Sales page with tabbed interface for recording new sales and viewing sales history.",
+  "frontend/src/pages/ProfileSettings.tsx": "Profile settings page for updating user display name and default low-stock threshold.",
+  "frontend/src/pages/Notifications.tsx": "Notifications settings page with placeholder UI for future WhatsApp integration (disabled in v1).",
+  "frontend/src/components/dashboard/DailySummaryCards.tsx": "Grid of metric cards displaying total sales, revenue, cost, and profit for the selected day.",
+  "frontend/src/components/dashboard/LowStockAlertList.tsx": "Table component displaying products below their stock thresholds with custom/default threshold indicators.",
+  "frontend/src/components/products/ProductFormDialog.tsx": "Modal form for creating and editing products with validation for all fields.",
+  "frontend/src/components/products/ProductList.tsx": "Table component displaying all products with edit/delete actions and low-stock badges.",
+  "frontend/src/components/sales/SaleForm.tsx": "Form for recording new sales with product selection, quantity input, price override, profit calculation preview, and notes.",
+  "frontend/src/components/sales/SalesHistoryTable.tsx": "Table displaying all recorded sales with product names, timestamps, quantities, prices, and profit badges.",
+  "frontend/src/index.css": "Global styles with OKLCH color system using emerald/green as primary color (avoiding blue/purple) for both light and dark modes."
+}

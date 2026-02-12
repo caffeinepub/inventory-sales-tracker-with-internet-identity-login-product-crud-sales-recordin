@@ -1,0 +1,169 @@
+{
+  "kind": "build_request",
+  "title": "Inventory & Sales Tracker with Internet Identity login, product CRUD, sales recording, and dashboard alerts",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement authentication using Internet Identity (passkey-based) and gate all app features behind a signed-in session.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3",
+          "msg-4"
+        ],
+        "quotes": [
+          "User login & onboarding – email or phone OTP",
+          "Supported option: • Internet Identity (passkey-based login)",
+          "sure"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can sign in and sign out using Internet Identity.",
+        "When signed out, the user cannot view or mutate products/sales data.",
+        "All backend calls that read/write app data require an authenticated principal (or otherwise only operate on caller-owned data)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add a simple onboarding/profile setup flow for first-time users after Internet Identity login (e.g., store display name and default low-stock threshold) and persist it per user principal.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-4"
+        ],
+        "quotes": [
+          "User login & onboarding – email or phone OTP",
+          "sure"
+        ]
+      },
+      "acceptanceCriteria": [
+        "First-time logged-in users are prompted to complete onboarding fields before accessing the main app.",
+        "Profile data persists across reloads and re-logins for the same Internet Identity principal.",
+        "Users can later update onboarding/profile fields from within the app."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement Product Management: create, list, edit, and delete products with fields sufficient for sales/profit calculations and low-stock alerts (at minimum: name, cost price, sale price, current stock quantity, low-stock threshold override or use default).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-4"
+        ],
+        "quotes": [
+          "Product management – add/edit/delete products",
+          "sure"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can add a product and it appears in the product list after creation.",
+        "User can edit an existing product and changes persist.",
+        "User can delete a product and it is removed from the list and no longer available for new sales entries.",
+        "Validation prevents invalid numeric values (e.g., negative quantities/prices) and shows user-facing error messages in English."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement Sales Recording: provide a simple sales form to record a sale for a product (date/time, product, quantity, unit sale price optional override, unit cost price sourced from product, notes optional) and automatically compute profit for the sale; update inventory stock accordingly.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-4"
+        ],
+        "quotes": [
+          "Sales recording – simple form, auto profit calculation",
+          "sure"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can record a sale and it persists; the sale appears in a sales list/history view.",
+        "Profit is automatically calculated and stored/displayed (profit = (unitSalePrice - unitCostPrice) * quantity).",
+        "Recording a sale decrements the product stock by the sold quantity and prevents selling more than available stock (unless explicitly allowed; if not allowed, show an error).",
+        "User-facing numbers are displayed consistently (e.g., currency formatting if applicable) and all user-facing text is in English."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Create a Dashboard that shows (a) daily summary metrics for the selected day (e.g., total sales count, revenue, cost, profit) and (b) a low-stock alert list based on per-product threshold (product override or user default).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-4"
+        ],
+        "quotes": [
+          "Dashboard – daily summary + low stock alert",
+          "sure"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dashboard loads after login and shows a clear daily summary for ‘today’ by default.",
+        "User can change the day (at least to previous days) and the summary updates accordingly.",
+        "Low-stock alert section lists products whose stock is at or below their threshold.",
+        "Dashboard data reflects recorded products and sales accurately after creating/editing records."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Add an optional Notifications settings area that clearly marks WhatsApp notifications as ‘not enabled in v1’ and provides a placeholder UI for future integration without attempting real WhatsApp API integration.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-3",
+          "msg-4"
+        ],
+        "quotes": [
+          "Notifications – WhatsApp integration optional for first version",
+          "Optional WhatsApp integration (frontend API calls only)",
+          "sure"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App includes a Notifications/Integrations section that mentions WhatsApp is optional and not active in v1.",
+        "No real WhatsApp messages are sent; the UI must not require external credentials to function.",
+        "Any future-facing controls are disabled or clearly labeled as placeholders."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Define and apply a cohesive, distinctive visual theme for the app (colors, typography, spacing, component style) and use it consistently across onboarding, products, sales, and dashboard screens (avoid blue/purple as primary colors).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-4"
+        ],
+        "quotes": [
+          "Step-by-Step Build:",
+          "sure"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All main screens share consistent typography, spacing, and component styling.",
+        "Primary color palette does not use blue/purple as the main brand colors.",
+        "Layout is responsive and usable on mobile and desktop."
+      ]
+    }
+  ],
+  "constraints": [
+    "Use Internet Identity for authentication; do not implement email OTP or phone/SMS OTP.",
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo).",
+    "Do not modify any frontend paths marked immutable by the system (frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui).",
+    "Use English for all user-facing text."
+  ],
+  "nonGoals": [
+    "Implementing email delivery, SMS/phone OTP, or any other non-Internet-Identity authentication.",
+    "Building a real WhatsApp integration that sends messages (v1 should be placeholder only).",
+    "Adding external databases or third-party backend services."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

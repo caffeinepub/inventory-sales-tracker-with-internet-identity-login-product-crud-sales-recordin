@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "App to manage products and sales with Internet Identity login, product CRUD, sales recording with profit calculation, dashboard summaries and low-stock alerts, and optional WhatsApp integration (later/optional).",
+  "architectural_notes": [
+    "OTP login (email/phone) not supported; use Internet Identity for authentication.",
+    "WhatsApp integration is optional for v1 and may be limited to frontend API calls only."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-implement-authentication-using-internet-identity-passkey-based-and-gate-all-app-features-behind-a-signed-in-session",
+      "title": "Implement authentication using Internet Identity (passkey-based) and gate all app features behind a signed-in session.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-simple-onboarding-profile-setup-flow-for-first-time-users-after-internet-identity-login-e-g-store-display-name-and-default-low-stock-threshold-and-persist-it-per-user-principal",
+      "title": "Add a simple onboarding/profile setup flow for first-time users after Internet Identity login (e.g., store display name and default low-stock threshold) and persist it per user principal.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-product-management-create-list-edit-and-delete-products-with-fields-sufficient-for-sales-profit-calculations-and-low-stock-alerts-at-minimum-name-cost-price-sale-price-current-stock-quantity-low-stock-threshold-override-or-use-default",
+      "title": "Implement Product Management: create, list, edit, and delete products with fields sufficient for sales/profit calculations and low-stock alerts (at minimum: name, cost price, sale price, current stock quantity, low-stock threshold override or use default).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-sales-recording-provide-a-simple-sales-form-to-record-a-sale-for-a-product-date-time-product-quantity-unit-sale-price-optional-override-unit-cost-price-sourced-from-product-notes-optional-and-automatically-compute-profit-for-the-sale-update-inventory-stock-accordingly",
+      "title": "Implement Sales Recording: provide a simple sales form to record a sale for a product (date/time, product, quantity, unit sale price optional override, unit cost price sourced from product, notes optional) and automatically compute profit for the sale; update inventory stock accordingly.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-dashboard-that-shows-a-daily-summary-metrics-for-the-selected-day-e-g-total-sales-count-revenue-cost-profit-and-b-a-low-stock-alert-list-based-on-per-product-threshold-product-override-or-user-default",
+      "title": "Create a Dashboard that shows (a) daily summary metrics for the selected day (e.g., total sales count, revenue, cost, profit) and (b) a low-stock alert list based on per-product threshold (product override or user default).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-optional-notifications-settings-area-that-clearly-marks-whatsapp-notifications-as-not-enabled-in-v1-and-provides-a-placeholder-ui-for-future-integration-without-attempting-real-whatsapp-api-integration",
+      "title": "Add an optional Notifications settings area that clearly marks WhatsApp notifications as ‘not enabled in v1’ and provides a placeholder UI for future integration without attempting real WhatsApp API integration.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-define-and-apply-a-cohesive-distinctive-visual-theme-for-the-app-colors-typography-spacing-component-style-and-use-it-consistently-across-onboarding-products-sales-and-dashboard-screens-avoid-blue-purple-as-primary-colors",
+      "title": "Define and apply a cohesive, distinctive visual theme for the app (colors, typography, spacing, component style) and use it consistently across onboarding, products, sales, and dashboard screens (avoid blue/purple as primary colors).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Implement user login & onboarding using Internet Identity (passkey-based) instead of email/phone OTP",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Product management: add/edit/delete products",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Sales recording: simple form with automatic profit calculation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Dashboard: daily summary plus low-stock alerts",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Optional WhatsApp notifications integration (likely frontend API calls only for first version)",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Inventory & Sales Tracker with Internet Identity login, product CRUD, sales recording, and dashboard alerts",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

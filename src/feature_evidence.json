@@ -1,0 +1,161 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-authentication-using-internet-identity-passkey-based-and-gate-all-app-features-behind-a-signed-in-session",
+      "featureTitle": "Implement authentication using Internet Identity (passkey-based) and gate all app features behind a signed-in session.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/LoginButton.tsx",
+        "frontend/src/components/layout/AppShell.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-simple-onboarding-profile-setup-flow-for-first-time-users-after-internet-identity-login-e-g-store-display-name-and-default-low-stock-threshold-and-persist-it-per-user-principal",
+      "featureTitle": "Add a simple onboarding/profile setup flow for first-time users after Internet Identity login (e.g., store display name and default low-stock threshold) and persist it per user principal.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/profile/ProfileOnboardingDialog.tsx",
+        "frontend/src/hooks/useUserProfile.ts",
+        "frontend/src/pages/ProfileSettings.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-product-management-create-list-edit-and-delete-products-with-fields-sufficient-for-sales-profit-calculations-and-low-stock-alerts-at-minimum-name-cost-price-sale-price-current-stock-quantity-low-stock-threshold-override-or-use-default",
+      "featureTitle": "Implement Product Management: create, list, edit, and delete products with fields sufficient for sales/profit calculations and low-stock alerts (at minimum: name, cost price, sale price, current stock quantity, low-stock threshold override or use default).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/products/ProductFormDialog.tsx",
+        "frontend/src/components/products/ProductList.tsx",
+        "frontend/src/pages/Products.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-sales-recording-provide-a-simple-sales-form-to-record-a-sale-for-a-product-date-time-product-quantity-unit-sale-price-optional-override-unit-cost-price-sourced-from-product-notes-optional-and-automatically-compute-profit-for-the-sale-update-inventory-stock-accordingly",
+      "featureTitle": "Implement Sales Recording: provide a simple sales form to record a sale for a product (date/time, product, quantity, unit sale price optional override, unit cost price sourced from product, notes optional) and automatically compute profit for the sale; update inventory stock accordingly.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/sales/SaleForm.tsx",
+        "frontend/src/components/sales/SalesHistoryTable.tsx",
+        "frontend/src/lib/format.ts",
+        "frontend/src/pages/Sales.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-dashboard-that-shows-a-daily-summary-metrics-for-the-selected-day-e-g-total-sales-count-revenue-cost-profit-and-b-a-low-stock-alert-list-based-on-per-product-threshold-product-override-or-user-default",
+      "featureTitle": "Create a Dashboard that shows (a) daily summary metrics for the selected day (e.g., total sales count, revenue, cost, profit) and (b) a low-stock alert list based on per-product threshold (product override or user default).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/dashboard/DailySummaryCards.tsx",
+        "frontend/src/components/dashboard/LowStockAlertList.tsx",
+        "frontend/src/hooks/useDashboard.ts",
+        "frontend/src/pages/Dashboard.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-an-optional-notifications-settings-area-that-clearly-marks-whatsapp-notifications-as-not-enabled-in-v1-and-provides-a-placeholder-ui-for-future-integration-without-attempting-real-whatsapp-api-integration",
+      "featureTitle": "Add an optional Notifications settings area that clearly marks WhatsApp notifications as ‘not enabled in v1’ and provides a placeholder UI for future integration without attempting real WhatsApp API integration.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/Notifications.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-define-and-apply-a-cohesive-distinctive-visual-theme-for-the-app-colors-typography-spacing-component-style-and-use-it-consistently-across-onboarding-products-sales-and-dashboard-screens-avoid-blue-purple-as-primary-colors",
+      "featureTitle": "Define and apply a cohesive, distinctive visual theme for the app (colors, typography, spacing, component style) and use it consistently across onboarding, products, sales, and dashboard screens (avoid blue/purple as primary colors).",
+      "files": [
+        "frontend/src/components/layout/AppShell.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/Dashboard.tsx",
+        "frontend/src/pages/Notifications.tsx",
+        "frontend/src/pages/Products.tsx",
+        "frontend/src/pages/ProfileSettings.tsx",
+        "frontend/src/pages/Sales.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

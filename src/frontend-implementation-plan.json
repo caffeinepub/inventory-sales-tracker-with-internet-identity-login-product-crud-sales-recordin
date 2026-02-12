@@ -1,0 +1,252 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Inventory & Sales Tracker (Frontend): II-gated app with onboarding, product & sales flows, dashboard, notifications placeholder, and cohesive theme",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Gate all app features behind Internet Identity login with sign-in/sign-out UX and authenticated-only data views.",
+      "acceptanceCriteria": [
+        "User can sign in and sign out using Internet Identity.",
+        "When signed out, the user cannot view or mutate products/sales data.",
+        "All backend calls that read/write app data require an authenticated principal (or otherwise only operate on caller-owned data)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the root app component that uses the immutable useInternetIdentity hook to gate the application: show a signed-out screen with a login CTA, and show the authenticated app shell only when identity is present. Use shadcn-ui layout primitives (e.g., Card/Button) to present the signed-out state; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Add a reusable Login/Logout button that uses the immutable useInternetIdentity hook and clears React Query cache on logout (per the authorization component guidance). Use shadcn-ui Button and optionally a loading state; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AuthGate.tsx",
+          "operation": "create",
+          "description": "Add an AuthGate wrapper component that centralizes: (1) signed-out blocking UI, (2) handling login status/error display, and (3) rendering children only when authenticated. Use shadcn-ui Alert/Card for error messaging; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.tsx",
+          "operation": "create",
+          "description": "Create an authenticated app shell (header + navigation + content slot) that is only rendered inside AuthGate. Use shadcn-ui components (e.g., NavigationMenu/Sheet for mobile nav) for responsive navigation; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Add first-time onboarding/profile setup after login and allow later profile edits (display name + default low-stock threshold).",
+      "acceptanceCriteria": [
+        "First-time logged-in users are prompted to complete onboarding fields before accessing the main app.",
+        "Profile data persists across reloads and re-logins for the same Internet Identity principal.",
+        "Users can later update onboarding/profile fields from within the app."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useUserProfile.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for current user profile: getCallerUserProfile + saveCallerUserProfile via the immutable useActor hook, following the authorization component guidance to avoid profile-setup UI flash (custom isLoading/isFetched handling). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/profile/ProfileOnboardingDialog.tsx",
+          "operation": "create",
+          "description": "Implement an onboarding dialog shown only when authenticated and getCallerUserProfile returns null; collect display name and default low-stock threshold with validation and English error messages. Use shadcn-ui Dialog/Form controls; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/ProfileSettings.tsx",
+          "operation": "create",
+          "description": "Create a profile settings view that allows updating display name and default low-stock threshold after onboarding is complete. Use shadcn-ui Card/Input/Button and show success/error feedback; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire onboarding gating into the authenticated flow: after login, fetch current profile and block access to the main app content until onboarding is completed; add navigation access to Profile settings once onboarded. Use the authorization component guidance for gating behavior; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Implement product CRUD UI with validation and list management for sales/profit and low-stock logic.",
+      "acceptanceCriteria": [
+        "User can add a product and it appears in the product list after creation.",
+        "User can edit an existing product and changes persist.",
+        "User can delete a product and it is removed from the list and no longer available for new sales entries.",
+        "Validation prevents invalid numeric values (e.g., negative quantities/prices) and shows user-facing error messages in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useProducts.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for product list and product mutations (create/update/delete) via the immutable useActor hook; ensure queries are enabled only when authenticated and actor is available, and invalidate/refetch lists after mutations. Use patterns consistent with the authorization component guidance; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/Products.tsx",
+          "operation": "create",
+          "description": "Create the Products management view: list products, open add/edit form, and allow delete with confirmation. Use shadcn-ui Table, Dialog, AlertDialog, and Form inputs; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/products/ProductFormDialog.tsx",
+          "operation": "create",
+          "description": "Implement a product create/edit dialog with fields: name, cost price, sale price, current stock quantity, and optional low-stock threshold override. Add client-side validation (non-negative numbers, required name) with English error text. Use shadcn-ui Dialog, Input, and form patterns; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/products/ProductList.tsx",
+          "operation": "create",
+          "description": "Add a reusable product list/table component with edit/delete actions and consistent formatting for prices/quantities. Use shadcn-ui Table/Badge components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the Products view into the authenticated navigation so it is reachable only after login and onboarding completion (no orphan views). Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Implement sales recording form with profit calculation display and inventory stock constraints, plus sales history list.",
+      "acceptanceCriteria": [
+        "User can record a sale and it persists; the sale appears in a sales list/history view.",
+        "Profit is automatically calculated and stored/displayed (profit = (unitSalePrice - unitCostPrice) * quantity).",
+        "Recording a sale decrements the product stock by the sold quantity and prevents selling more than available stock (unless explicitly allowed; if not allowed, show an error).",
+        "User-facing numbers are displayed consistently (e.g., currency formatting if applicable) and all user-facing text is in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useSales.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for sales history queries and recording a sale via the immutable useActor hook; after recording a sale, invalidate both sales and products queries so stock updates in UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/Sales.tsx",
+          "operation": "create",
+          "description": "Create a Sales view containing: (1) a sales recording form and (2) a sales history list. Use shadcn-ui Card/Table components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/sales/SaleForm.tsx",
+          "operation": "create",
+          "description": "Implement sale recording form fields: date/time, product, quantity, optional unit sale price override, and optional notes. Source unit cost price from selected product. Show computed profit preview and validate: quantity > 0, cannot exceed available stock (show English error). Use shadcn-ui Select/Popover/Calendar (or DateTime input) and form inputs; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/sales/SalesHistoryTable.tsx",
+          "operation": "create",
+          "description": "Render sales history with timestamp, product (by name lookup), quantity, sale price, cost price, and profit. Use consistent number formatting and English labels. Use shadcn-ui Table; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/lib/format.ts",
+          "operation": "create",
+          "description": "Add shared formatting helpers for currency/number and date/time display used across products, sales, and dashboard to ensure consistent user-facing numbers and English formatting defaults (e.g., en-US)."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the Sales view into authenticated navigation and ensure it is only accessible after login and onboarding completion. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Create a dashboard with selectable day summary metrics and low-stock alerts derived from product thresholds (override or user default).",
+      "acceptanceCriteria": [
+        "Dashboard loads after login and shows a clear daily summary for ‘today’ by default.",
+        "User can change the day (at least to previous days) and the summary updates accordingly.",
+        "Low-stock alert section lists products whose stock is at or below their threshold.",
+        "Dashboard data reflects recorded products and sales accurately after creating/editing records."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/Dashboard.tsx",
+          "operation": "create",
+          "description": "Create the Dashboard view as the default authenticated screen: show daily summary metrics for the selected day and a low-stock alerts section. Use shadcn-ui Card, Tabs/Segmented controls, and date picker controls; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useDashboard.ts",
+          "operation": "create",
+          "description": "Create a hook that fetches sales for a selected day (via getSalesByDateRange) and low-stock alerts (via getLowStockAlerts) using the immutable useActor hook; compute summary metrics in the frontend (sales count, revenue, cost, profit) and return UI-ready data. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/DailySummaryCards.tsx",
+          "operation": "create",
+          "description": "Add reusable metric cards (sales count, revenue, cost, profit) with consistent number formatting and English labels. Use shadcn-ui Card components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/LowStockAlertList.tsx",
+          "operation": "create",
+          "description": "Render low-stock products list with threshold context (product override vs user default) and current stock. Use shadcn-ui Table/Badge/Alert components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Set Dashboard as the default authenticated route/view and wire it into navigation. Ensure it remains gated by login and onboarding completion. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Add a Notifications/Integrations settings area with WhatsApp clearly marked as not enabled in v1 (placeholder-only).",
+      "acceptanceCriteria": [
+        "App includes a Notifications/Integrations section that mentions WhatsApp is optional and not active in v1.",
+        "No real WhatsApp messages are sent; the UI must not require external credentials to function.",
+        "Any future-facing controls are disabled or clearly labeled as placeholders."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/Notifications.tsx",
+          "operation": "create",
+          "description": "Create a Notifications/Integrations view that clearly states WhatsApp notifications are not enabled in v1. Add placeholder controls that are disabled and labeled as coming soon, without requesting credentials. Use shadcn-ui Card, Switch, and Alert components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the Notifications/Integrations view into authenticated navigation (behind login and onboarding completion). Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Apply a cohesive, responsive visual theme across the app with a non-blue/non-purple primary palette.",
+      "acceptanceCriteria": [
+        "All main screens share consistent typography, spacing, and component styling.",
+        "Primary color palette does not use blue/purple as the main brand colors.",
+        "Layout is responsive and usable on mobile and desktop."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Add global styles and Tailwind CSS variables for a cohesive theme (typography, spacing defaults, component surface colors). Set a distinctive primary color that is not blue/purple (e.g., emerald/green or amber) by adjusting CSS variables consumed by shadcn-ui (e.g., --primary / --primary-foreground). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.tsx",
+          "operation": "modify",
+          "description": "Ensure the authenticated layout is responsive (mobile navigation via collapsible drawer/sheet, consistent paddings, readable typography) and applies the theme consistently across Dashboard, Products, Sales, Notifications, and Profile. Use shadcn-ui responsive primitives; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/Dashboard.tsx",
+          "operation": "modify",
+          "description": "Adjust dashboard spacing, headings, and component composition to match the global theme and improve mobile usability (stacked cards, readable tables). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/Products.tsx",
+          "operation": "modify",
+          "description": "Align Products UI with the global theme (consistent cards, table density, button variants, form spacing) and ensure mobile usability. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/Sales.tsx",
+          "operation": "modify",
+          "description": "Align Sales UI with the global theme (form layout, table responsiveness, consistent labels) and ensure mobile usability. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/ProfileSettings.tsx",
+          "operation": "modify",
+          "description": "Align Profile Settings UI with the global theme and ensure consistent typography/spacing across settings screens. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/Notifications.tsx",
+          "operation": "modify",
+          "description": "Align Notifications/Integrations placeholder UI with the global theme, including disabled control styling and clear informational messaging. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}
